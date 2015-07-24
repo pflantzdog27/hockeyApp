@@ -1,0 +1,25 @@
+<section data-ng-controller="teamDetailController">
+    <h1>Team Name</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Games Played</th>
+            <th>Goals</th>
+            <th>Assists</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="player in teamDetail">
+            <td>{{player.jerseyNumber}}</td>
+            <td>{{player.name}}</td>
+            <td>{{player.gamesPlayed}}</td>
+            <td>{{player.goals}}</td>
+            <td>{{player.assists}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</section>

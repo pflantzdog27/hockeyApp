@@ -1,0 +1,101 @@
+<div ng-controller="teamsController">
+    <div class="row">
+        <div class="col-md-6">
+            Select the away team
+            <select class="form-control" data-ng-model="awayTeam" data-ng-options="team as team.name for team in teams">
+            </select>
+        </div>
+        <div class="col-md-6">
+            Select the home team
+            <select class="form-control" data-ng-model="homeTeam" data-ng-options="team as team.name for team in teams">
+            </select>
+        </div>
+    </div>
+    <button class="btn btn-primary btn-block" data-ng-click="open('lg')">View Matchup</button>
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-body row">
+            <div id="away-team" class="col-md-12">
+                <header>
+                    <h2>{{awayTeam.name}}</h2>
+                    <h4>Team Stats</h4>
+                    <dl class="team-stats-row clearfix">
+                        <dt>Points:</dt>
+                            <dd>{{awayTeam.point}} |</dd>
+                        <dt>Wins:</dt>
+                            <dd>{{awayTeam.win}} |</dd>
+                        <dt>Losses:</dt>
+                            <dd>{{awayTeam.loss}} |</dd>
+                        <dt>Draws:</dt>
+                            <dd>{{awayTeam.draw}}</dd>
+                    </dl>
+                </header>
+                <table class="table table-striped">
+                    <h4>Player Stats</h4>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                            <th>Games Played</th>
+                        </tr>
+                    </thead>
+                    <tbody data-ng-repeat="player in players">
+                        <tr data-ng-if="player.team == awayTeam.name">
+                            <td >{{player.jersey}}</td>
+                            <td >{{player.name}}</td>
+                            <td >{{player.goals}}</td>
+                            <td >{{player.assists}}</td>
+                            <td >{{player.gamesPlayed}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div id="home-team" class="col-md-12">
+                <header>
+                    <h2>{{homeTeam.name}}</h2>
+                    <h4>Team Stats</h4>
+                    <dl class="team-stats-row clearfix">
+                        <dt>Points:</dt>
+                        <dd>{{homeTeam.point}} |</dd>
+                        <dt>Wins:</dt>
+                        <dd>{{homeTeam.win}} |</dd>
+                        <dt>Losses:</dt>
+                        <dd>{{homeTeam.loss}} |</dd>
+                        <dt>Draws:</dt>
+                        <dd>{{homeTeam.draw}}</dd>
+                    </dl>
+                </header>
+                <table class="table table-striped">
+                    <h4>Player Stats</h4>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Goals</th>
+                        <th>Assists</th>
+                        <th>Games Played</th>
+                    </tr>
+                    </thead>
+                    <tbody data-ng-repeat="player in players">
+                    <tr data-ng-if="player.team == homeTeam.name">
+                        <td >{{player.jersey}}</td>
+                        <td >{{player.name}}</td>
+                        <td >{{player.goals}}</td>
+                        <td >{{player.assists}}</td>
+                        <td >{{player.gamesPlayed}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-ng-click="ok()"><a href="#/matchup">Start the Matchup!</a></button>
+            <button class="btn btn-warning" data-ng-click="cancel()">Cancel/Close</button>
+        </div>
+    </script>
+
+
+</div>
+

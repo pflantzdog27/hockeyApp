@@ -1,0 +1,22 @@
+<div data-ng-controller="playerStatsController">
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Goals</th>
+                <th>Assists</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="stat in playerStats">
+                    <td >{{stat.jersey}}</td>
+                    <td >{{stat.name}}</td>
+                    <td><input type="number" name="goalsScored" placeholder="0"></td>
+                    <td ><input type="number" name="goalsScored" placeholder="0"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

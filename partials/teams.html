@@ -1,0 +1,24 @@
+<section data-ng-controller="teamsController">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Division</th>
+                <th>Win</th>
+                <th>Loss</th>
+                <th>Overtime Loss</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="team in teams">
+                <td><a href="#/teams/{{team.slug}}">{{team.name}}</a></td>
+                <td>{{team.division}}</td>
+                <td>{{team.wins}}</td>
+                <td>{{team.losses}}</td>
+                <td>{{team.OTlosses}}</td>
+                <td>{{team.points}}</td>
+            </tr>
+        </tbody>
+    </table>
+</section>

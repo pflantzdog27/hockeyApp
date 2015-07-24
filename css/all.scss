@@ -1,0 +1,26 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import 'bootstrap';
+@import 'glyphs';
+@import 'global-variables';
+@import 'mixins';
+@import 'ng-animations';
+
+
+body {
+  overflow-x: hidden;
+}
+
+.team-stats-row {
+  dt {
+    float: left;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  dd {
+    margin: 0 5px;
+    float: left;
+  }
+}
+
