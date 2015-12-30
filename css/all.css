@@ -5926,25 +5926,72 @@ Extenders
 .slide-container {
   position: relative;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  min-height: 200px; }
   .slide-container .slide {
     position: absolute;
     left: 0;
-    top: 50px;
+    top: 0;
     width: 100%;
     height: 100%; }
-  .slide-container .ng-enter, .slide-container .ng-leave {
-    -o-transition: all 500ms;
-    -ms-transition: all 500ms;
-    -moz-transition: all 500ms;
-    -webkit-transition: all 500ms;
-    transition: all 500ms; }
+    .slide-container .slide.ng-enter, .slide-container .slide.ng-leave {
+      -o-transition: all 500ms;
+      -ms-transition: all 500ms;
+      -moz-transition: all 500ms;
+      -webkit-transition: all 500ms;
+      transition: all 500ms; }
   .slide-container .ng-enter {
     left: 100%; }
   .slide-container .ng-enter-active {
     left: 0; }
   .slide-container .slide.ng-leave-active {
     left: -200%; }
+
+th.tablesort-sortable {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: pointer; }
+
+table .tablesort-sortable:after {
+  content: "";
+  float: right;
+  margin-top: 7px;
+  visibility: hidden;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: none;
+  border-bottom: 4px solid #000; }
+
+table .tablesort-desc:after {
+  border-top: 4px solid #000;
+  border-bottom: none; }
+
+table .tablesort-asc, table .tablesort-desc {
+  background-color: rgba(141, 192, 219, 0.25); }
+
+table .tablesort-sortable:hover:after, table .tablesort-asc:after, table .tablesort-desc:after {
+  visibility: visible; }
+
+/*
+ * Styling for the table row shown in empty tables
+ */
+/* The row is always added as the first row in a table
+   Hide it by default */
+.showIfLast {
+  display: none; }
+
+/* Only show it if it is also the last row of the table. */
+.showIfLast:last-child {
+  display: table-row; }
+
+.showIfLast td {
+  text-align: center; }
+
+.showIfLast td:after {
+  content: "Loading Data"; }
 
 body {
   overflow-x: hidden; }
@@ -5958,3 +6005,19 @@ body {
 .team-stats-row dd {
   margin: 0 5px;
   float: left; }
+
+#spinner {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin: -24px 0 0; }
+
+#page-header {
+  padding-bottom: 20px; }
+  #page-header h1 {
+    margin: 0; }
+    #page-header h1 span {
+      text-transform: capitalize; }
+
+.past-date {
+  opacity: 0.5; }

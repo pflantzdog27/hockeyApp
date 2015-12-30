@@ -2,7 +2,11 @@
 angular.module('hockeyApp', [
   'hockeyApp.controllers',
   'hockeyApp.services',
-  'hockeyApp.router',
-  'ui.bootstrap'
+  'hockeyApp.routers',
+  'hockeyApp.directives',
+  'hockeyApp.filters',
+  'ui.bootstrap',
+  'tableSort',
+  'angularMoment'
 ]);
 

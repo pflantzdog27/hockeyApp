@@ -1,0 +1,37 @@
+<section data-ng-controller="leagueLeadersController">
+    <header class="form-inline clearfix" id="page-header">
+        <h1 class="pull-left">League Leaders > <span class="text-muted">Division {{displayDivision}}</span></h1>
+        <div class="form-group-sm pull-right">
+            <label for="divisionFilter" class="text-info">Select a Division </label>
+            <select id="divisionFilter" class="form-control" data-ng-change="getDivision()" data-ng-model="divisionObject" data-ng-options="leader.division for leader in leaders | unique : 'division' | orderBy : 'division'"></select>
+        </div>
+    </header>
+</section>
+<table class="table" ts-wrapper>
+    <thead>
+    <tr>
+        <th ts-criteria="playerName | lowercase">Player</th>
+        <th ts-criteria="-points | parseInt" ts-default>Points</th>
+        <th ts-criteria="-goals | parseInt">G</th>
+        <th ts-criteria="-assists | parseInt">A</th>
+        <th ts-criteria="-ppg | parseInt">PPG</th>
+        <th ts-criteria="-gwg | parseInt">GWG</th>
+        <th ts-criteria="-pim | parseInt">PIM</th>
+        <th ts-criteria="-gp | parseInt">GP</th>
+        <th ts-criteria="team | lowercase">Team</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ts-repeat data-ng-repeat="leader in leaders | filter: filterDivision ">
+        <td>{{leader.playerName}}</td>
+        <td class="success">{{leader.points}}</td>
+        <td>{{leader.goals}}</td>
+        <td>{{leader.assists}}</td>
+        <td>{{leader.ppg | number:2}}</td>
+        <td>{{leader.gwg}}</td>
+        <td>{{leader.pim}}</td>
+        <td>{{leader.gp}}</td>
+        <td>{{leader.team}}</td>
+    </tr>
+    </tbody>
+</table>

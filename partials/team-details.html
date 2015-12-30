@@ -1,25 +1,35 @@
+<!-- ALL THE SORTS ARE BACKWARDS WE NEED TO FIGURE OUT HOW TO REVERSE SO THAT GOALS ARE FROM MOST TO LEAST -->
 <section data-ng-controller="teamDetailController">
-    <h1>Team Name</h1>
-    <table class="table">
+    <header id="page-header">
+        <h1 class="pull-left">Team > <span class="text-muted">{{nameOfTeam}}</span></h1>
+        <a class="btn btn-default pull-right" href="#/teams">Display All Teams</a>
+    </header>
+    <table class="table" ts-wrapper>
         <thead>
-        <tr>
-            <th>#</th>
-            <th>Player</th>
-            <th>Games Played</th>
-            <th>Goals</th>
-            <th>Assists</th>
-        </tr>
+            <tr>
+                <th ts-criteria="jerseyNumber | parseInt">#</th>
+                <th ts-criteria="name | lowercase">Player</th>
+                <th ts-criteria="-gamesPlayed | parseInt">Games Played</th>
+                <th ts-criteria="-goals | parseInt">Goals</th>
+                <th ts-criteria="-assists | parseInt">Assists</th>
+                <th ts-criteria="-points | parseInt" ts-default>Points</th>
+                <th ts-criteria="-pim | parseInt">PIM</th>
+                <th ts-criteria="-gwg | parseInt">GWG</th>
+                <th ts-criteria="-ppg | parseInt">PPG</th>
+            </tr>
         </thead>
         <tbody>
-        <tr data-ng-repeat="player in teamDetail">
-            <td>{{player.jerseyNumber}}</td>
-            <td>{{player.name}}</td>
-            <td>{{player.gamesPlayed}}</td>
-            <td>{{player.goals}}</td>
-            <td>{{player.assists}}</td>
-        </tr>
+            <tr data-ng-repeat="player in teamDetail" ts-repeat>
+                <td>{{player.jerseyNumber}}</td>
+                <td>{{player.name}}</td>
+                <td>{{player.gamesPlayed}}</td>
+                <td>{{player.goals}}</td>
+                <td>{{player.assists}}</td>
+                <td class="success">{{player.points}}</td>
+                <td>{{player.pim}}</td>
+                <td>{{player.gwg}}</td>
+                <td>{{player.ppg | number: 2}}</td>
+            </tr>
         </tbody>
     </table>
-
-
 </section>

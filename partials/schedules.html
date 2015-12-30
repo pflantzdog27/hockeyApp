@@ -1,1 +1,29 @@
-<h1>Schedules</h1>
+<section data-ng-controller="schedulesController">
+    <header id="page-header">
+        <h1 class="pull-left">Schedules</h1>
+    </header>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Home Team</th>
+            <th>Visiting Team</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="game in schedulesAPI | orderBy:'date'" data-ng-class="{true: 'past-date', false: 'future-date'}[currentTime > game.date]">
+            <td><span>{{game.date | amFromUnix | amDateFormat:'MMM D, YYYY (ddd)'}}</span></td>
+            <td>
+                <a data-ng-show="game.type == 'home'" data-ng-click="setTeam(game.team)" href="#/teams/{{game.opponentSlug}}">{{game.team}}</a>
+                <a data-ng-hide="game.type == 'home'" data-ng-click="setTeam(game.opponent)" href="#/teams/{{game.currentSlug}}">{{game.opponent}}</a>
+            </td>
+            <td>
+                <a data-ng-show="game.type == 'away'" data-ng-click="setTeam(game.team)" href="#/teams/{{game.opponentSlug}}">{{game.team}}</a>
+                <a data-ng-hide="game.type == 'away'" data-ng-click="setTeam(game.opponent)" href="#/teams/{{game.currentSlug}}">{{game.opponent}}</a>
+            </td>
+            <td><span>{{game.date | amFromUnix | amDateFormat:'h:mma'}}</span></td>
+        </tr>
+        </tbody>
+    </table>
+</section>

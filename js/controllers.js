@@ -1,62 +1,142 @@
 angular.module('hockeyApp.controllers', [])
+    ///////////////////  HOME  //////////////////////////
+    .controller("homeController", function($scope, $http) {
 
-    .controller("teamsController", function($scope, $http, sharedServices) {
+    }) //close controller
+///////////////////  TEAMS  //////////////////////////
+    .controller("teamsController", function($scope, $http, sharedServices, teamService) {
         var teamsAPI = [];
-        $scope.teams = teamsAPI;
         init();
 
         function init() {
-            var urlBase = 'http://localhost/mrhl/api/get_recent_posts/?post_type=team';
-            var teams = $http.jsonp(urlBase +'&callback=JSON_CALLBACK');
-            teams.success(function (data) {
+            teamService.async().then(function (data) {
                 $.each(data.posts, function (i, team) {
                     teamsAPI.push({
-                        name: team.custom_fields.team_name[0],
-                        division: team.custom_fields.team_tier[0],
-                        wins: team.custom_fields.team_win[0],
-                        losses: team.custom_fields.team_loss[0],
-                        OTlosses: team.custom_fields.team_draw[0],
-                        points: team.custom_fields.team_point[0],
-                        slug: team.slug
+                        name: team.acf.team_name,
+                        division: team.acf.team_division,
+                        wins: team.acf.team_win,
+                        losses: team.acf.team_loss,
+                        OTlosses: team.acf.team_otl,
+                        points: (team.acf.team_win * 2) + parseInt(team.acf.team_otl),
+                        slug: team.slug,
+                        gamesPlayed : parseInt(team.acf.team_otl) + parseInt(team.acf.team_win) + parseInt(team.acf.team_loss),
+                        goalsFor : team.acf.team_goals_for,
+                        goalsAgainst : team.acf.team_goals_against
                     })
                 });
+                $scope.teams = teamsAPI;
             });
-            teams.error(function (data, status, headers, config) {
-                alert('That request didn\'nt work');
-            });
-        };
+        }
 
         // Click Event to view details of the Team. Team detail controller is a separate controller
         $scope.setTeam = function(teamName) {
             sharedServices.getTeamName(teamName);
+        };
+        //Division filter and display
+        $scope.displayDivision = 1;
+        $scope.filterDivision = null;
+        $scope.getDivision = function() {
+            $scope.displayDivision = $scope.divisionObject.division;
+            $scope.filterDivision = {division : $scope.displayDivision};
+        };
+    }) //close controller
+
+///////////////////  TEAMS DETAILS  //////////////////////////
+    .controller('teamDetailController', function($scope, teamDetailService, sharedServices, $routeParams) {
+        var teamDetails = [];
+        var teamNameID = sharedServices.teamName.length != 0 ? sharedServices.teamName : $routeParams.teamDetail;
+        $scope.nameOfTeam = teamNameID;
+        init();
+
+        function init() {
+            teamDetailService.get({id: teamNameID }, function (d) {
+                var players = d.posts[0].acf.team_players;
+                $.each(players, function (i, player) {
+                    teamDetails.push({
+                        name: player.team_player_name,
+                        jerseyNumber: player.team_jersey_number,
+                        gamesPlayed: player.team_stats_gp,
+                        goals: player.team_stats_goals,
+                        assists: player.team_stats_assists,
+                        points : parseInt(player.team_stats_goals) + parseInt(player.team_stats_assists),
+                        ppg : (parseInt(player.team_stats_goals) + parseInt(player.team_stats_assists)) / player.team_stats_gp,
+                        gwg : player.team_stats_gwg,
+                        pim : player.team_stats_pim
+                    });
+                });
+                $scope.teamDetail = teamDetails;
+            });
         }
+    }) // close controller
+///////////////////  LEAGUE LEADERS  //////////////////////////
+    .controller('leagueLeadersController', function($scope, teamService) {
+        $scope.leaders = [];
+
+        teamService.async().then(function (d) {
+            $.each(d.posts, function (i, team) {
+                var teamDivision = team.acf.team_division;
+                var teamName = team.acf.team_name;
+                $.each(team.acf.team_players, function (el, player) {
+                    $scope.leaders.push({
+                        playerName: player.team_player_name,
+                        gp: player.team_stats_gp,
+                        goals: player.team_stats_goals,
+                        assists: player.team_stats_assists,
+                        points: parseInt(player.team_stats_goals) + parseInt(player.team_stats_assists),
+                        team: teamName,
+                        division: teamDivision,
+                        ppg: (parseInt(player.team_stats_goals) + parseInt(player.team_stats_assists)) / player.team_stats_gp,
+                        gwg: player.team_stats_gwg,
+                        pim: player.team_stats_pim
+                    });
+                });
+            });
+        });
+        //Division filter and display
+        $scope.displayDivision = 1;
+        $scope.filterDivision = {division : $scope.displayDivision};
+        $scope.getDivision = function() {
+            $scope.displayDivision = $scope.divisionObject.division;
+            $scope.filterDivision = {division : $scope.displayDivision};
+        };
+    }) // close controller
+///////////////////  SCHEDULES  //////////////////////////
+    .controller("schedulesController", function($scope, $http, sharedServices, teamService) {
+        var schedulesAPI = [];
+        init();
+
+        function init() {
+            teamService.async().then(function (data) {
+                $.each(data.posts, function (i, team) {
+                    var teamName = team.acf.team_name;
+                    var thisSlug = team.slug;
+                    $.each(team.acf.team_schedule, function (el, schedule) {
+                        var otherSlug = schedule.schedule_game_opponent.replace(/\s+/g, '-').toLowerCase();
+                        schedulesAPI.push({
+                            team: teamName,
+                            date: schedule.schedule_game_date,
+                            opponent: schedule.schedule_game_opponent,
+                            type: schedule.schedule_game_type,
+                            opponentSlug: thisSlug,
+                            currentSlug : otherSlug
+                        })
+                    });
+                });
+
+
+                // ADD AN EACH WITHIN EACH
+                $scope.schedulesAPI = schedulesAPI;
+            });
+        }
+        // Click Event to view details of the Team. Team detail controller is a separate controller
+        $scope.setTeam = function(teamName) {
+            sharedServices.getTeamName(teamName);
+        };
+        // current time
+        $scope.currentTime = Date.now() / 1000 | 0;
 
 
     }) //close controller
-
-    .controller('teamDetailController', function($scope, teamDetailService, sharedServices) {
-        var teamDetails = [];
-        $scope.teamDetail = teamDetails;
-        init();
-        function init() {
-            teamDetailService.get({id: sharedServices.teamName}, function (d) {
-                $.each(d.posts, function (i, player) {
-                    teamDetails.push({
-                        name: player.title_plain,
-                        jerseyNumber: player.custom_fields.jersey_number[0],
-                        gamesPlayed: player.custom_fields.stats_gp[0],
-                        goals: player.custom_fields.stats_goals[0],
-                        assists: player.custom_fields.stats_assists[0]
-                    })
-                });
-            });
-        }
-
-    }); // close controller
-
-
-
-
 
 
 

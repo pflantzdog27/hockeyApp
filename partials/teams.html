@@ -1,23 +1,34 @@
 <section data-ng-controller="teamsController">
+    <header class="form-inline clearfix" id="page-header">
+        <h1 class="pull-left">Teams <span class="text-muted" data-ng-show="filterDivision!=null"> > Division {{displayDivision}}</span><span class="text-muted" data-ng-show="filterDivision==null"> >All Divisions</span></h1>
+        <select id="divisionFilter" class=" pull-right form-control btn-primary" data-ng-change="getDivision()" data-ng-model="divisionObject"
+                    data-ng-options="team.division for team in teams | unique : 'division' | orderBy : 'division'">
+                <option value="">- Select Division -</option>
+            </select>
+    </header>
     <table class="table">
         <thead>
             <tr>
                 <th>Team</th>
-                <th>Division</th>
                 <th>Win</th>
                 <th>Loss</th>
-                <th>Overtime Loss</th>
-                <th>Points</th>
+                <th>OTL</th>
+                <th class="success">Points</th>
+                <th>GP</th>
+                <th>GF</th>
+                <th>GA</th>
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="team in teams">
-                <td><a ng-click="setTeam(team.name)" href="#/teams/{{team.slug}}">{{team.name}}</a></td>
-                <td>{{team.division}}</td>
+            <tr class="team-row" data-ng-repeat="team in teams | orderBy:['-points', 'gamesPlayed', '-wins', 'goalsAgainst'] | filter : filterDivision ">
+                <td><a data-ng-click="setTeam(team.name)" href="#/teams/{{team.slug}}">{{team.name}}</a></td>
                 <td>{{team.wins}}</td>
                 <td>{{team.losses}}</td>
                 <td>{{team.OTlosses}}</td>
-                <td>{{team.points}}</td>
+                <td class="success">{{team.points}}</td>
+                <td>{{team.gamesPlayed}}</td>
+                <td>{{team.goalsFor}}</td>
+                <td>{{team.goalsAgainst}}</td>
             </tr>
         </tbody>
     </table>

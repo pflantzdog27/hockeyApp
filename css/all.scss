@@ -4,6 +4,7 @@
 @import 'global-variables';
 @import 'mixins';
 @import 'ng-animations';
+@import 'table-sort';
 
 
 body {
@@ -24,3 +25,22 @@ body {
   }
 }
 
+#spinner {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin: -24px 0 0;
+}
+
+#page-header {
+  padding-bottom: 20px;
+  h1 {
+    margin: 0;
+      span {
+        text-transform: capitalize;
+      }
+  }
+}
+.past-date {
+  opacity: 0.5;
+}
